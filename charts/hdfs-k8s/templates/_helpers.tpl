@@ -167,31 +167,6 @@ login may fail.
 {{- end -}}
 
 {{/*
-Create the zookeeper quorum server list.  The below uses two loops to make
-sure the last item does not have comma. It uses index 0 for the last item
-since that is the only special index that helm template gives us.
-*/}}
-{{- define "zookeeper-quorum" -}}
-{{- if .Values.global.zookeeperQuorumOverride -}}
-{{- .Values.global.zookeeperQuorumOverride -}}
-{{- else -}}
-{{- $service := include "zookeeper-fullname" . -}}
-{{- $domain := include "svc-domain" . -}}
-{{- $replicas := .Values.global.zookeeperQuorumSize | int -}}
-{{- range $i, $e := until $replicas -}}
-  {{- if ne $i 0 -}}
-    {{- printf "%s-%d.%s-headless.%s:2181," $service $i $service $domain -}}
-  {{- end -}}
-{{- end -}}
-{{- range $i, $e := until $replicas -}}
-  {{- if eq $i 0 -}}
-    {{- printf "%s-%d.%s-headless.%s:2181" $service $i $service $domain -}}
-  {{- end -}}
-{{- end -}}
-{{- end -}}
-{{- end -}}
-
-{{/*
 Construct the name of the Kerberos KDC pod 0.
 */}}
 {{- define "krb5-pod-0" -}}
@@ -206,27 +181,6 @@ Construct the full name of the Kerberos KDC statefulset member 0.
 {{- $service := include "hdfs-k8s.krb5.fullname" . -}}
 {{- $domain := include "svc-domain" . -}}
 {{- printf "%s.%s.%s" $pod $service $domain -}}
-{{- end -}}
-
-{{/*
-Create the journalnode quorum server list.  The below uses two loops to make
-sure the last item does not have the delimiter. It uses index 0 for the last
-item since that is the only special index that helm template gives us.
-*/}}
-{{- define "journalnode-quorum" -}}
-{{- $service := include "hdfs-k8s.journalnode.fullname" . -}}
-{{- $domain := include "svc-domain" . -}}
-{{- $replicas := .Values.global.journalnodeQuorumSize | int -}}
-{{- range $i, $e := until $replicas -}}
-  {{- if ne $i 0 -}}
-    {{- printf "%s-%d.%s.%s:8485;" $service $i $service $domain -}}
-  {{- end -}}
-{{- end -}}
-{{- range $i, $e := until $replicas -}}
-  {{- if eq $i 0 -}}
-    {{- printf "%s-%d.%s.%s:8485" $service $i $service $domain -}}
-  {{- end -}}
-{{- end -}}
 {{- end -}}
 
 {{/*
