@@ -58,10 +58,33 @@ hdfs-namenode-k8s:
 ## hdfs-datanode-k8s:
 ## ------------------------------------------------------------------------------
 hdfs-datanode-k8s:
+  persistence:
+    ## Persistent Volume Storage Class
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+    ##   GKE, AWS & OpenStack)
+    ##
+    # storageClass: "-"
+
+    ## To choose a suitable persistent volume from available static volumes, selectors
+    ## are used.
+    # selector:
+    #   matchLabels:
+    #     volume-type: hdfs-ssd
+
+    accessMode: ReadWriteOnce
+
+    size: 100Mi
+
   ## Node labels and tolerations for pod assignment
   nodeSelector: {}
   tolerations: []
   affinity: {}
+
+  # Number of datanodes to create
+  size: 1
 
 ## ------------------------------------------------------------------------------
 ## hdfs-krb5-k8s:
@@ -109,13 +132,6 @@ hdfs-krb5-k8s:
 ## Global values affecting all sub-charts:
 ## ------------------------------------------------------------------------------
 global:
-  ## A list of the local disk directories on cluster nodes that will contain the datanode
-  ## blocks. These paths will be mounted to the datanode as K8s HostPath volumes.
-  ## In a command line, the list should be enclosed in '{' and '}'.
-  ## e.g. --set "dataNodeHostPath={/hdfs-data,/hdfs-data1}"
-  dataNodeHostPath:
-    - /hdfs-data
-
   ## Parameters for determining which Unix user and group IDs to use in pods.
   ## Persistent volume permission may need to match these.
   podSecurityContext:

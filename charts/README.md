@@ -234,18 +234,6 @@ Finally, test the setup using the following commands:
 
 ## Advanced options
 
-### Setting HostPath volume locations for datanodes
-
-HDFS on K8s stores the file data on the local disks of the K8s cluster nodes
-using K8s HostPath volumes. You may want to change the default locations. Set
-global.dataNodeHostPath to override the default value. Note the option
-takes a list in case you want to use multiple disks.
-
-```
-  $ helm install -n my-hdfs charts/hdfs-k8s  \
-      --set "global.dataNodeHostPath={/mnt/sda1/hdfs-data0,/mnt/sda1/hdfs-data1}"
-```
-
 ### Excluding datanodes from some K8s cluster nodes
 
 You may want to exclude some K8s cluster nodes from datanodes launch target.

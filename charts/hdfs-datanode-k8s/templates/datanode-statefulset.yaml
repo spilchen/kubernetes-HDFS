@@ -1,3 +1,18 @@
+# A headless service to create DNS records.
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "hdfs-k8s.datanode.fullname" . }}
+  labels:
+    app: {{ template "hdfs-k8s.datanode.name" . }}
+    chart: {{ template "hdfs-k8s.subchart" . }}
+    release: {{ .Release.Name }}
+spec:
+  clusterIP: None
+  selector:
+    app: {{ template "hdfs-k8s.datanode.name" . }}
+    release: {{ .Release.Name }}
+---
 # Provides datanode helper scripts.
 apiVersion: v1
 kind: ConfigMap
@@ -32,10 +47,8 @@ data:
     done
     echo $_CLUSTER_ID | grep -q -v null
 ---
-# Deleting a daemonset may need some trick. See
-# https://github.com/kubernetes/kubernetes/issues/33245#issuecomment-261250489
 apiVersion: apps/v1
-kind: DaemonSet
+kind: StatefulSet
 metadata:
   name: {{ template "hdfs-k8s.datanode.fullname" . }}
   labels:
@@ -47,6 +60,8 @@ spec:
     matchLabels:
       app: {{ template "hdfs-k8s.datanode.name" . }}
       release: {{ .Release.Name }}
+  serviceName: {{ template "hdfs-k8s.datanode.fullname" . }}
+  replicas: {{ .Values.size }}
   template:
     metadata:
       labels:
@@ -119,10 +134,8 @@ spec:
             - name: hdfs-config
               mountPath: /etc/hadoop-custom-conf
               readOnly: true
-            {{- range $index, $path := .Values.global.dataNodeHostPath }}
-            - name: hdfs-data-{{ $index }}
-              mountPath: /hadoop/dfs/data/{{ $index }}
-            {{- end }}
+            - name: hdfs-data
+              mountPath: /hadoop/dfs/data
             {{- if .Values.global.kerberosEnabled }}
             - name: kerberos-config
               mountPath: /etc/krb5.conf
@@ -171,11 +184,6 @@ spec:
           configMap:
             name: {{ template "hdfs-k8s.datanode.fullname" . }}-scripts
             defaultMode: 0744
-        {{- range $index, $path := .Values.global.dataNodeHostPath }}
-        - name: hdfs-data-{{ $index }}
-          hostPath:
-            path: {{ $path }}
-        {{- end }}
         - name: hdfs-config
           configMap:
             name: {{ template "hdfs-k8s.config.fullname" . }}
@@ -193,3 +201,23 @@ spec:
           emptyDir: {}
         {{- end }}
         {{- end }}
+  volumeClaimTemplates:
+    - metadata:
+        name: hdfs-data
+      spec:
+        accessModes:
+          - {{ .Values.persistence.accessMode }}
+        resources:
+          requests:
+            storage: {{ .Values.persistence.size }}
+      {{- if .Values.persistence.storageClass }}
+        {{- if (eq "-" .Values.persistence.storageClass) }}
+        storageClassName: ""
+        {{- else }}
+        storageClassName: "{{ .Values.persistence.storageClass }}"
+        {{- end }}
+      {{- end }}
+       {{- if .Values.persistence.selector }}
+        selector:
+{{ toYaml .Values.persistence.selector | indent 10 }}
+       {{- end }}
