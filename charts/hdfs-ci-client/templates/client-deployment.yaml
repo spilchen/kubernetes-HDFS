@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "hdfs-k8s.client.fullname" . }}
+  name: {{ template "hdfs-ci.client.fullname" . }}
   labels:
-    app: {{ template "hdfs-k8s.client.name" . }}
-    chart: {{ template "hdfs-k8s.subchart" . }}
+    app: {{ template "hdfs-ci.client.name" . }}
+    chart: {{ template "hdfs-ci.subchart" . }}
     release: {{ .Release.Name }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{ template "hdfs-k8s.client.name" . }}
+      app: {{ template "hdfs-ci.client.name" . }}
       release: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ template "hdfs-k8s.client.name" . }}
+        app: {{ template "hdfs-ci.client.name" . }}
         release: {{ .Release.Name }}
       {{- if .Values.podAnnotations }}
       annotations:
@@ -47,7 +47,7 @@ spec:
       volumes:
         - name: hdfs-config
           configMap:
-            name: {{ template "hdfs-k8s.config.fullname" . }}
+            name: {{ template "hdfs-ci.config.fullname" . }}
         {{- if .Values.global.kerberosEnabled }}
         - name: kerberos-config
           configMap:

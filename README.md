@@ -29,15 +29,15 @@ HDFS on K8s supports the following features and limitations:
 
 Here is the list of all charts.
 
-  - hdfs-k8s: main uber-chart. Launches other charts.
-  - hdfs-namenode-k8s: A setup of the namenode that launches only one namenode.
+  - hdfs-ci: main uber-chart. Launches other charts.
+  - hdfs-ci-namenode: A setup of the namenode that launches only one namenode.
     i.e. This does not support HA.
-  - hdfs-datanode-k8s: a statefulset and other K8s components for launching HDFS
+  - hdfs-ci-datanode: a statefulset and other K8s components for launching HDFS
     datanode daemons, which are responsible for storing file data.
-  - hdfs-config-k8s: a configmap containing Hadoop config files for HDFS.
-  - hdfs-client-k8s: a pod that is configured to run Hadoop client commands
+  - hdfs-ci-config: a configmap containing Hadoop config files for HDFS.
+  - hdfs-ci-client: a pod that is configured to run Hadoop client commands
     for accessing HDFS.
-  - hdfs-krb5-k8s: a size-1 statefulset and other K8s components for launching
+  - hdfs-ci-krb5: a size-1 statefulset and other K8s components for launching
     a Kerberos server, which can be used to secure HDFS. Disabled by default.
 
 # Prerequisite

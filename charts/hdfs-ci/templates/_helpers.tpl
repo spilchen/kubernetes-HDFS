@@ -2,7 +2,7 @@
 {{/*
 Create a short app name.
 */}}
-{{- define "hdfs-k8s.name" -}}
+{{- define "hdfs-ci.name" -}}
 hdfs
 {{- end -}}
 
@@ -11,11 +11,11 @@ Create a fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "hdfs-k8s.fullname" -}}
+{{- define "hdfs-ci.fullname" -}}
 {{- if .Values.global.fullnameOverride -}}
 {{- .Values.global.fullnameOverride | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
-{{- $name := include "hdfs-k8s.name" . -}}
+{{- $name := include "hdfs-ci.name" . -}}
 {{- if contains $name .Release.Name -}}
 {{- .Release.Name | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
@@ -27,12 +27,12 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the subchart label.
 */}}
-{{- define "hdfs-k8s.subchart" -}}
+{{- define "hdfs-ci.subchart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{- define "zookeeper-fullname" -}}
-{{- $fullname := include "hdfs-k8s.fullname" . -}}
+{{- $fullname := include "hdfs-ci.fullname" . -}}
 {{- if contains "zookeeper" $fullname -}}
 {{- printf "%s" $fullname -}}
 {{- else -}}
@@ -40,12 +40,12 @@ Create chart name and version as used by the subchart label.
 {{- end -}}
 {{- end -}}
 
-{{- define "hdfs-k8s.config.name" -}}
-{{- template "hdfs-k8s.name" . -}}-config
+{{- define "hdfs-ci.config.name" -}}
+{{- template "hdfs-ci.name" . -}}-config
 {{- end -}}
 
-{{- define "hdfs-k8s.config.fullname" -}}
-{{- $fullname := include "hdfs-k8s.fullname" . -}}
+{{- define "hdfs-ci.config.fullname" -}}
+{{- $fullname := include "hdfs-ci.fullname" . -}}
 {{- if contains "config" $fullname -}}
 {{- printf "%s" $fullname -}}
 {{- else -}}
@@ -53,12 +53,12 @@ Create chart name and version as used by the subchart label.
 {{- end -}}
 {{- end -}}
 
-{{- define "hdfs-k8s.krb5.name" -}}
-{{- template "hdfs-k8s.name" . -}}-krb5
+{{- define "hdfs-ci.krb5.name" -}}
+{{- template "hdfs-ci.name" . -}}-krb5
 {{- end -}}
 
-{{- define "hdfs-k8s.krb5.fullname" -}}
-{{- $fullname := include "hdfs-k8s.fullname" . -}}
+{{- define "hdfs-ci.krb5.fullname" -}}
+{{- $fullname := include "hdfs-ci.fullname" . -}}
 {{- if contains "config" $fullname -}}
 {{- printf "%s" $fullname -}}
 {{- else -}}
@@ -66,12 +66,12 @@ Create chart name and version as used by the subchart label.
 {{- end -}}
 {{- end -}}
 
-{{- define "hdfs-k8s.journalnode.name" -}}
-{{- template "hdfs-k8s.name" . -}}-journalnode
+{{- define "hdfs-ci.journalnode.name" -}}
+{{- template "hdfs-ci.name" . -}}-journalnode
 {{- end -}}
 
-{{- define "hdfs-k8s.journalnode.fullname" -}}
-{{- $fullname := include "hdfs-k8s.fullname" . -}}
+{{- define "hdfs-ci.journalnode.fullname" -}}
+{{- $fullname := include "hdfs-ci.fullname" . -}}
 {{- if contains "journalnode" $fullname -}}
 {{- printf "%s" $fullname -}}
 {{- else -}}
@@ -79,12 +79,12 @@ Create chart name and version as used by the subchart label.
 {{- end -}}
 {{- end -}}
 
-{{- define "hdfs-k8s.namenode.name" -}}
-{{- template "hdfs-k8s.name" . -}}-namenode
+{{- define "hdfs-ci.namenode.name" -}}
+{{- template "hdfs-ci.name" . -}}-namenode
 {{- end -}}
 
-{{- define "hdfs-k8s.namenode.fullname" -}}
-{{- $fullname := include "hdfs-k8s.fullname" . -}}
+{{- define "hdfs-ci.namenode.fullname" -}}
+{{- $fullname := include "hdfs-ci.fullname" . -}}
 {{- if contains "namenode" $fullname -}}
 {{- printf "%s" $fullname -}}
 {{- else -}}
@@ -92,12 +92,12 @@ Create chart name and version as used by the subchart label.
 {{- end -}}
 {{- end -}}
 
-{{- define "hdfs-k8s.datanode.name" -}}
-{{- template "hdfs-k8s.name" . -}}-datanode
+{{- define "hdfs-ci.datanode.name" -}}
+{{- template "hdfs-ci.name" . -}}-datanode
 {{- end -}}
 
-{{- define "hdfs-k8s.datanode.fullname" -}}
-{{- $fullname := include "hdfs-k8s.fullname" . -}}
+{{- define "hdfs-ci.datanode.fullname" -}}
+{{- $fullname := include "hdfs-ci.fullname" . -}}
 {{- if contains "datanode" $fullname -}}
 {{- printf "%s" $fullname -}}
 {{- else -}}
@@ -105,12 +105,12 @@ Create chart name and version as used by the subchart label.
 {{- end -}}
 {{- end -}}
 
-{{- define "hdfs-k8s.client.name" -}}
-{{- template "hdfs-k8s.name" . -}}-client
+{{- define "hdfs-ci.client.name" -}}
+{{- template "hdfs-ci.name" . -}}-client
 {{- end -}}
 
-{{- define "hdfs-k8s.client.fullname" -}}
-{{- $fullname := include "hdfs-k8s.fullname" . -}}
+{{- define "hdfs-ci.client.fullname" -}}
+{{- $fullname := include "hdfs-ci.fullname" . -}}
 {{- if contains "client" $fullname -}}
 {{- printf "%s" $fullname -}}
 {{- else -}}
@@ -139,7 +139,7 @@ Create the name for a Kubernetes Configmap containing a Kerberos config file.
 {{- if .Values.global.kerberosConfigMapOverride -}}
 {{- .Values.global.kerberosConfigMapOverride | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
-{{- $name := include "hdfs-k8s.krb5.fullname" . -}}
+{{- $name := include "hdfs-ci.krb5.fullname" . -}}
 {{- printf "%s-config" $name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 {{- end -}}
@@ -151,7 +151,7 @@ Create the name for a Kubernetes Secret containing Kerberos keytabs.
 {{- if .Values.global.kerberosKeytabsSecretOverride -}}
 {{- .Values.global.kerberosKeytabsSecretOverride | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
-{{- $name := include "hdfs-k8s.krb5.fullname" . -}}
+{{- $name := include "hdfs-ci.krb5.fullname" . -}}
 {{- printf "%s-keytabs" $name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 {{- end -}}
@@ -170,7 +170,7 @@ login may fail.
 Construct the name of the Kerberos KDC pod 0.
 */}}
 {{- define "krb5-pod-0" -}}
-{{- template "hdfs-k8s.krb5.fullname" . -}}-0
+{{- template "hdfs-ci.krb5.fullname" . -}}-0
 {{- end -}}
 
 {{/*
@@ -178,7 +178,7 @@ Construct the full name of the Kerberos KDC statefulset member 0.
 */}}
 {{- define "krb5-svc-0" -}}
 {{- $pod := include "krb5-pod-0" . -}}
-{{- $service := include "hdfs-k8s.krb5.fullname" . -}}
+{{- $service := include "hdfs-ci.krb5.fullname" . -}}
 {{- $domain := include "svc-domain" . -}}
 {{- printf "%s.%s.%s" $pod $service $domain -}}
 {{- end -}}
@@ -187,7 +187,7 @@ Construct the full name of the Kerberos KDC statefulset member 0.
 Construct the name of the namenode pod 0.
 */}}
 {{- define "namenode-pod-0" -}}
-{{- template "hdfs-k8s.namenode.fullname" . -}}-0
+{{- template "hdfs-ci.namenode.fullname" . -}}-0
 {{- end -}}
 
 {{/*
@@ -195,7 +195,7 @@ Construct the full name of the namenode statefulset member 0.
 */}}
 {{- define "namenode-svc-0" -}}
 {{- $pod := include "namenode-pod-0" . -}}
-{{- $service := include "hdfs-k8s.namenode.fullname" . -}}
+{{- $service := include "hdfs-ci.namenode.fullname" . -}}
 {{- $domain := include "svc-domain" . -}}
 {{- printf "%s.%s.%s" $pod $service $domain -}}
 {{- end -}}
@@ -204,7 +204,7 @@ Construct the full name of the namenode statefulset member 0.
 Construct the name of the namenode pod 1.
 */}}
 {{- define "namenode-pod-1" -}}
-{{- template "hdfs-k8s.namenode.fullname" . -}}-1
+{{- template "hdfs-ci.namenode.fullname" . -}}-1
 {{- end -}}
 
 {{/*
@@ -212,7 +212,7 @@ Construct the full name of the namenode statefulset member 1.
 */}}
 {{- define "namenode-svc-1" -}}
 {{- $pod := include "namenode-pod-1" . -}}
-{{- $service := include "hdfs-k8s.namenode.fullname" . -}}
+{{- $service := include "hdfs-ci.namenode.fullname" . -}}
 {{- $domain := include "svc-domain" . -}}
 {{- printf "%s.%s.%s" $pod $service $domain -}}
 {{- end -}}

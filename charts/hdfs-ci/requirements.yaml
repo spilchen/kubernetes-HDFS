@@ -1,23 +1,23 @@
 dependencies:
-  - name: hdfs-config-k8s
+  - name: hdfs-ci-config
     version: "0.1.0"
-    repository: "file://../hdfs-config-k8s"
+    repository: "file://../hdfs-ci-config"
     condition: condition.subchart.config
-  - name: hdfs-krb5-k8s
+  - name: hdfs-ci-krb5
     version: "0.1.0"
-    repository: "file://../hdfs-krb5-k8s"
+    repository: "file://../hdfs-ci-krb5"
     condition: condition.subchart.kerberos
     tags:
       - kerberos
-  - name: hdfs-namenode-k8s
+  - name: hdfs-ci-namenode
     version: "0.1.0"
-    repository: "file://../hdfs-namenode-k8s"
+    repository: "file://../hdfs-ci-namenode"
     condition: condition.subchart.namenode
-  - name: hdfs-datanode-k8s
+  - name: hdfs-ci-datanode
     version: "0.1.0"
-    repository: "file://../hdfs-datanode-k8s"
+    repository: "file://../hdfs-ci-datanode"
     condition: condition.subchart.datanode
-  - name: hdfs-client-k8s
+  - name: hdfs-ci-client
     version: "0.1.0"
-    repository: "file://../hdfs-client-k8s"
+    repository: "file://../hdfs-ci-client"
     condition: condition.subchart.client

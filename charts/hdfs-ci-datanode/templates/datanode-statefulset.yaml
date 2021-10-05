@@ -2,25 +2,25 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "hdfs-k8s.datanode.fullname" . }}
+  name: {{ template "hdfs-ci.datanode.fullname" . }}
   labels:
-    app: {{ template "hdfs-k8s.datanode.name" . }}
-    chart: {{ template "hdfs-k8s.subchart" . }}
+    app: {{ template "hdfs-ci.datanode.name" . }}
+    chart: {{ template "hdfs-ci.subchart" . }}
     release: {{ .Release.Name }}
 spec:
   clusterIP: None
   selector:
-    app: {{ template "hdfs-k8s.datanode.name" . }}
+    app: {{ template "hdfs-ci.datanode.name" . }}
     release: {{ .Release.Name }}
 ---
 # Provides datanode helper scripts.
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ template "hdfs-k8s.datanode.fullname" . }}-scripts
+  name: {{ template "hdfs-ci.datanode.fullname" . }}-scripts
   labels:
-    app: {{ template "hdfs-k8s.datanode.name" . }}
-    chart: {{ template "hdfs-k8s.subchart" . }}
+    app: {{ template "hdfs-ci.datanode.name" . }}
+    chart: {{ template "hdfs-ci.subchart" . }}
     release: {{ .Release.Name }}
 data:
   check-status.sh: |
@@ -50,22 +50,22 @@ data:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ template "hdfs-k8s.datanode.fullname" . }}
+  name: {{ template "hdfs-ci.datanode.fullname" . }}
   labels:
-    app: {{ template "hdfs-k8s.datanode.name" . }}
-    chart: {{ template "hdfs-k8s.subchart" . }}
+    app: {{ template "hdfs-ci.datanode.name" . }}
+    chart: {{ template "hdfs-ci.subchart" . }}
     release: {{ .Release.Name }}
 spec:
   selector:
     matchLabels:
-      app: {{ template "hdfs-k8s.datanode.name" . }}
+      app: {{ template "hdfs-ci.datanode.name" . }}
       release: {{ .Release.Name }}
-  serviceName: {{ template "hdfs-k8s.datanode.fullname" . }}
+  serviceName: {{ template "hdfs-ci.datanode.fullname" . }}
   replicas: {{ .Values.size }}
   template:
     metadata:
       labels:
-        app: {{ template "hdfs-k8s.datanode.name" . }}
+        app: {{ template "hdfs-ci.datanode.name" . }}
         release: {{ .Release.Name }}
       {{- if .Values.podAnnotations }}
       annotations:
@@ -81,7 +81,7 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
               - matchExpressions:
-                - key: {{ template "hdfs-k8s.datanode.fullname" . }}-exclude
+                - key: {{ template "hdfs-ci.datanode.fullname" . }}-exclude
                   operator: DoesNotExist
       {{- end }}
       {{- if .Values.nodeSelector }}
@@ -182,11 +182,11 @@ spec:
       volumes:
         - name: dn-scripts
           configMap:
-            name: {{ template "hdfs-k8s.datanode.fullname" . }}-scripts
+            name: {{ template "hdfs-ci.datanode.fullname" . }}-scripts
             defaultMode: 0744
         - name: hdfs-config
           configMap:
-            name: {{ template "hdfs-k8s.config.fullname" . }}
+            name: {{ template "hdfs-ci.config.fullname" . }}
         {{- if .Values.global.kerberosEnabled }}
         - name: kerberos-config
           configMap:

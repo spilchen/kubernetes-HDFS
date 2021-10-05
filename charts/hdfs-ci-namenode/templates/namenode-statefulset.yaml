@@ -2,10 +2,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "hdfs-k8s.namenode.fullname" . }}
+  name: {{ template "hdfs-ci.namenode.fullname" . }}
   labels:
-    app: {{ template "hdfs-k8s.namenode.name" . }}
-    chart: {{ template "hdfs-k8s.subchart" . }}
+    app: {{ template "hdfs-ci.namenode.name" . }}
+    chart: {{ template "hdfs-ci.subchart" . }}
     release: {{ .Release.Name }}
 spec:
   ports:
@@ -15,7 +15,7 @@ spec:
     name: webhdfs
   clusterIP: None
   selector:
-    app: {{ template "hdfs-k8s.namenode.name" . }}
+    app: {{ template "hdfs-ci.namenode.name" . }}
     release: {{ .Release.Name }}
 ---
 # Provides namenode helper scripts. Most of them are start scripts
@@ -24,10 +24,10 @@ spec:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ template "hdfs-k8s.namenode.fullname" . }}-scripts
+  name: {{ template "hdfs-ci.namenode.fullname" . }}-scripts
   labels:
-    app: {{ template "hdfs-k8s.namenode.name" . }}
-    chart: {{ template "hdfs-k8s.subchart" . }}
+    app: {{ template "hdfs-ci.namenode.name" . }}
+    chart: {{ template "hdfs-ci.subchart" . }}
     release: {{ .Release.Name }}
 data:
   # A bootstrap script which will start namenode daemons after conducting
@@ -52,7 +52,7 @@ data:
     _METADATA_DIR=/hadoop/dfs/name/current
     if [[ ! -d $_METADATA_DIR ]]; then
         $_HDFS_BIN --config $HADOOP_CONF_DIR namenode -format  \
-            -nonInteractive hdfs-k8s ||
+            -nonInteractive hdfs-ci ||
             (rm -rf $_METADATA_DIR; exit 1)
     fi
     $_HDFS_BIN --config $HADOOP_CONF_DIR namenode
@@ -70,23 +70,23 @@ data:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ template "hdfs-k8s.namenode.fullname" . }}
+  name: {{ template "hdfs-ci.namenode.fullname" . }}
   labels:
-    app: {{ template "hdfs-k8s.namenode.name" . }}
-    chart: {{ template "hdfs-k8s.subchart" . }}
+    app: {{ template "hdfs-ci.namenode.name" . }}
+    chart: {{ template "hdfs-ci.subchart" . }}
     release: {{ .Release.Name }}
 spec:
   selector:
     matchLabels:
-      app: {{ template "hdfs-k8s.namenode.name" . }}
+      app: {{ template "hdfs-ci.namenode.name" . }}
       release: {{ .Release.Name }}
-  serviceName: {{ template "hdfs-k8s.namenode.fullname" . }}
+  serviceName: {{ template "hdfs-ci.namenode.fullname" . }}
   # Create a size-1 set.
   replicas: 1
   template:
     metadata:
       labels:
-        app: {{ template "hdfs-k8s.namenode.name" . }}
+        app: {{ template "hdfs-ci.namenode.name" . }}
         release: {{ .Release.Name }}
       {{- if .Values.podAnnotations }}
       annotations:
@@ -117,7 +117,7 @@ spec:
             - name: HADOOP_CUSTOM_CONF_DIR
               value: /etc/hadoop-custom-conf
             - name: CLUSTER_NAME
-              value: hdfs-k8s
+              value: hdfs-ci
             # Used by the start script below.
             - name: MY_POD
               valueFrom:
@@ -176,11 +176,11 @@ spec:
       volumes:
         - name: nn-scripts
           configMap:
-            name: {{ template "hdfs-k8s.namenode.fullname" . }}-scripts
+            name: {{ template "hdfs-ci.namenode.fullname" . }}-scripts
             defaultMode: 0744
         - name: hdfs-config
           configMap:
-            name: {{ template "hdfs-k8s.config.fullname" . }}
+            name: {{ template "hdfs-ci.config.fullname" . }}
         {{- if .Values.global.kerberosEnabled }}
         - name: kerberos-config
           configMap:

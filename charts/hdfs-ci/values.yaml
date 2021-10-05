@@ -1,7 +1,7 @@
 ## ------------------------------------------------------------------------------
-## hdfs-config-k8s:
+## hdfs-ci-config:
 ## ------------------------------------------------------------------------------
-hdfs-config-k8s:
+hdfs-ci-config:
   ## Custom hadoop config keys passed to the hdfs configmap as extra keys.
   customHadoopConfig:
      coreSite: {}
@@ -13,9 +13,9 @@ hdfs-config-k8s:
       # dfs.datanode.use.datanode.hostname: "false"
 
 ## ------------------------------------------------------------------------------
-## hdfs-namenode-k8s:
+## hdfs-ci-namenode:
 ## ------------------------------------------------------------------------------
-hdfs-namenode-k8s:
+hdfs-ci-namenode:
   ## Name of the namenode start script in the config map.
   namenodeStartScript: format-and-run.sh
 
@@ -55,9 +55,9 @@ hdfs-namenode-k8s:
   affinity: {}
 
 ## ------------------------------------------------------------------------------
-## hdfs-datanode-k8s:
+## hdfs-ci-datanode:
 ## ------------------------------------------------------------------------------
-hdfs-datanode-k8s:
+hdfs-ci-datanode:
   persistence:
     ## Persistent Volume Storage Class
     ## If defined, storageClassName: <storageClass>
@@ -87,9 +87,9 @@ hdfs-datanode-k8s:
   size: 1
 
 ## ------------------------------------------------------------------------------
-## hdfs-krb5-k8s:
+## hdfs-ci-krb5:
 ## ------------------------------------------------------------------------------
-hdfs-krb5-k8s:
+hdfs-ci-krb5:
   persistence:
     ## Persistent Volume Storage Class
     ## If defined, storageClassName: <storageClass>
