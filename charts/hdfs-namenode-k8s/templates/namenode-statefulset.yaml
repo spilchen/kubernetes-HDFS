@@ -11,6 +11,8 @@ spec:
   ports:
   - port: 8020
     name: fs
+  - port: 50070
+    name: webhdfs
   clusterIP: None
   selector:
     app: {{ template "hdfs-k8s.namenode.name" . }}
@@ -124,6 +126,8 @@ spec:
           ports:
           - containerPort: 8020
             name: fs
+          - containerPort: 50070
+            name: webhdfs
           command: ['/bin/sh', '-c']
           # The start script is provided by a config map.
           args:
