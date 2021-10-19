@@ -17,7 +17,3 @@ dependencies:
     version: "0.1.0"
     repository: "file://../hdfs-ci-datanode"
     condition: condition.subchart.datanode
-  - name: hdfs-ci-client
-    version: "0.1.0"
-    repository: "file://../hdfs-ci-client"
-    condition: condition.subchart.client

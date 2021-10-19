@@ -84,7 +84,7 @@ hdfs-ci-datanode:
   affinity: {}
 
   # Number of datanodes to create
-  size: 1
+  size: 3
 
 ## ------------------------------------------------------------------------------
 ## hdfs-ci-krb5:

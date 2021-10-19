@@ -3,7 +3,6 @@ kind: ConfigMap
 metadata:
   name: {{ template "hdfs-ci.config.fullname" . }}
   labels:
-    app: {{ template "hdfs-ci.client.name" . }}
     chart: {{ template "hdfs-ci.subchart" . }}
     release: {{ .Release.Name }}
 data:
@@ -125,6 +124,10 @@ data:
         <value>{{ $value }}</value>
       </property>
     {{- end }}
+      <property>
+        <name>dfs.webhdfs.enabled</name>
+        <value>true</value>
+      </property>
       <property>
         <name>dfs.namenode.name.dir</name>
         <value>file:///hadoop/dfs/name</value>

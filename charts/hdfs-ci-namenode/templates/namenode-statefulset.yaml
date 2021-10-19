@@ -112,7 +112,7 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: hdfs-namenode
-          image: uhopper/hadoop-namenode:2.7.2
+          image: uhopper/hadoop-namenode:2.8.1
           env:
             - name: HADOOP_CUSTOM_CONF_DIR
               value: /etc/hadoop-custom-conf

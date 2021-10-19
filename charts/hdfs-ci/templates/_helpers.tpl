@@ -3,7 +3,7 @@
 Create a short app name.
 */}}
 {{- define "hdfs-ci.name" -}}
-hdfs
+hdfs-ci
 {{- end -}}
 
 {{/*
@@ -102,19 +102,6 @@ Create chart name and version as used by the subchart label.
 {{- printf "%s" $fullname -}}
 {{- else -}}
 {{- printf "%s-datanode" $fullname | trunc 63 | trimSuffix "-" -}}
-{{- end -}}
-{{- end -}}
-
-{{- define "hdfs-ci.client.name" -}}
-{{- template "hdfs-ci.name" . -}}-client
-{{- end -}}
-
-{{- define "hdfs-ci.client.fullname" -}}
-{{- $fullname := include "hdfs-ci.fullname" . -}}
-{{- if contains "client" $fullname -}}
-{{- printf "%s" $fullname -}}
-{{- else -}}
-{{- printf "%s-client" $fullname | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 {{- end -}}
 

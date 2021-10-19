@@ -35,8 +35,6 @@ Here is the list of all charts.
   - hdfs-ci-datanode: a statefulset and other K8s components for launching HDFS
     datanode daemons, which are responsible for storing file data.
   - hdfs-ci-config: a configmap containing Hadoop config files for HDFS.
-  - hdfs-ci-client: a pod that is configured to run Hadoop client commands
-    for accessing HDFS.
   - hdfs-ci-krb5: a size-1 statefulset and other K8s components for launching
     a Kerberos server, which can be used to secure HDFS. Disabled by default.
 
@@ -94,29 +92,10 @@ a few times before they become ready.
   $ kubectl get pod -l release=my-hdfs
 
   NAME                             READY     STATUS    RESTARTS   AGE
-  my-hdfs-client-c749d9f8f-d5pvk   1/1       Running   0          2m
   my-hdfs-datanode-0               1/1       Running   3          2m
   my-hdfs-namenode-0               1/1       Running   3          2m
 ```
 
-Namenode and datanodes are currently using the K8s `hostNetwork` so they can
-see physical IPs of each other. If they are not using `hostNetowrk`,
-overlay K8s network providers such as weave-net may mask the physical IPs,
-which will confuse the data locality later inside namenodes.
-
-Finally, test with the client pod:
-
-```
-  $ _CLIENT=$(kubectl get pods -l app=hdfs-client,release=my-hdfs -o name |  \
-      cut -d/ -f 2)
-  $ kubectl exec $_CLIENT -- hdfs dfsadmin -report
-
-  $ kubectl exec $_CLIENT -- hadoop fs -rm -r -f /tmp
-  $ kubectl exec $_CLIENT -- hadoop fs -mkdir /tmp
-  $ kubectl exec $_CLIENT -- sh -c  \
-    "(head -c 100M < /dev/urandom > /tmp/random-100M)"
-  $ kubectl exec $_CLIENT -- hadoop fs -copyFromLocal /tmp/random-100M /tmp
-```
 
 ## Kerberos
 

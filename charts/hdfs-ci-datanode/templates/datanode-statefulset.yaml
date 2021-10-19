@@ -92,12 +92,10 @@ spec:
       tolerations:
 {{ toYaml .Values.tolerations | indent 8 }}
       {{- end }}
-      hostNetwork: true
-      hostPID: true
       dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: datanode
-          image: uhopper/hadoop-datanode:2.7.2
+          image: uhopper/hadoop-datanode:2.8.1
           env:
             - name: HADOOP_CUSTOM_CONF_DIR
               value: /etc/hadoop-custom-conf
